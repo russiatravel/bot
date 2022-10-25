@@ -1,8 +1,9 @@
+from telegram import ReplyKeyboardRemove, Update
+from telegram.ext import CallbackContext, ConversationHandler
+
 from bot.clients.api import client as api
 from bot.conversations import states
 from bot.conversations.schemas import JSON
-from telegram import ReplyKeyboardRemove, Update
-from telegram.ext import CallbackContext, ConversationHandler
 
 
 def city_choice(update: Update, context: CallbackContext[JSON, JSON, JSON]) -> int:
