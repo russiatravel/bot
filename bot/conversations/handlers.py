@@ -1,9 +1,9 @@
+from telegram.ext import CommandHandler, ConversationHandler, Filters, MessageHandler
+
 from bot.conversations import states
 from bot.conversations.cities import city_choice, city_stats
 from bot.conversations.core import cancel, start
 from bot.conversations.places import place_choice, place_stats
-from telegram.ext import (CommandHandler, ConversationHandler, Filters,
-                          MessageHandler)
 
 conv_handler = ConversationHandler(
     entry_points=[CommandHandler('start', start)],
