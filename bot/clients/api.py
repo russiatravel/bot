@@ -10,6 +10,14 @@ class City(BaseModel):
     description: str
 
 
+class Place(BaseModel):
+    uid: int
+    name: str
+    description: str
+    city_id: int
+    preview_image_url: str
+
+
 class CityClient:
     def __init__(self, url: str) -> None:
         self.url = f'{url}/cities'
@@ -20,6 +28,13 @@ class CityClient:
         cities = response.json()
 
         return [City(**city) for city in cities]
+
+    def get_for_city(self, uid: int) -> list[Place]:
+        response = httpx.get(url=f'{self.url}/{uid}/places/')
+        response.raise_for_status()
+        places = response.json()
+
+        return [Place(**place) for place in places]
 
 
 class PlaceClient:

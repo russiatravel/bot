@@ -1,7 +1,8 @@
-from bot.conversations import states
-from bot.conversations.schemas import JSON
 from telegram import ReplyKeyboardMarkup, Update
 from telegram.ext import CallbackContext, ConversationHandler
+
+from bot.conversations import states
+from bot.conversations.schemas import JSON
 
 reply_keyboard = [
     ['City', 'Place'],

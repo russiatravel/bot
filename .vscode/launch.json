@@ -5,10 +5,10 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "chatbot",
+            "name": "bot",
             "type": "python",
             "request": "launch",
-            "module": "chatbot",
+            "module": "bot",
             "justMyCode": true,
             "console": "internalConsole"
         }
