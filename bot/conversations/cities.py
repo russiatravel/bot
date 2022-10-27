@@ -1,5 +1,5 @@
 from telegram import ReplyKeyboardRemove, Update
-from telegram.ext import CallbackContext, ConversationHandler
+from telegram.ext import CallbackContext
 
 from bot.clients.api import client as api
 from bot.conversations import states
@@ -36,4 +36,4 @@ def city_stats(update: Update, context: CallbackContext[JSON, JSON, JSON]) -> in
 
     update.message.reply_text(','.join(place_name))
 
-    return ConversationHandler.END
+    return states.PLACE_STATS
