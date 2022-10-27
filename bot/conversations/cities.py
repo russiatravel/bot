@@ -36,4 +36,4 @@ def city_stats(update: Update, context: CallbackContext[JSON, JSON, JSON]) -> in
 
     update.message.reply_text(','.join(place_name))
 
-    return ConversationHandler.END
+    return states.PLACE_STATS
