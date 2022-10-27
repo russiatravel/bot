@@ -1,5 +1,5 @@
 from telegram import ReplyKeyboardRemove, Update
-from telegram.ext import CallbackContext, ConversationHandler
+from telegram.ext import CallbackContext
 
 from bot.clients.api import client as api
 from bot.conversations import states
