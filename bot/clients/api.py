@@ -41,6 +41,13 @@ class PlaceClient:
     def __init__(self, url: str) -> None:
         self.url = f'{url}/places'
 
+    def get_place(self, name: str) -> Place:
+        response = httpx.get(url=f'{self.url}/?name={name}')
+        response.raise_for_status()
+        place = response.json()
+
+        return Place(**place)
+
 
 class ApiClient:
     def __init__(self, url: str) -> None:

@@ -1,6 +1,7 @@
 from telegram import ReplyKeyboardRemove, Update
 from telegram.ext import CallbackContext, ConversationHandler
 
+from bot.clients.api import client as api
 from bot.conversations import states
 from bot.conversations.schemas import JSON
 
@@ -21,8 +22,16 @@ def place_choice(update: Update, context: CallbackContext[JSON, JSON, JSON]) -> 
 def place_stats(update: Update, context: CallbackContext[JSON, JSON, JSON]) -> int:
     """Asks the user to enter a place name."""
     assert update.message is not None
-    place = update.message.text
-    answer = f'about {place} ...'
+
+    target_place = str(update.message.text)
+    place = api.places.get_place(target_place)
+
+    cities = api.cities.get_all()
+    for city in cities:
+        if city.uid == place.city_id:
+            name = city.name
+
+    answer = f'{place.name} находится в городе {name}. \n {place.description}'
     update.message.reply_text(answer)
 
     return ConversationHandler.END
