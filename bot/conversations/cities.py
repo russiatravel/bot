@@ -24,6 +24,7 @@ def city_choice(update: Update, context: CallbackContext[JSON, JSON, JSON]) -> i
 def city_stats(update: Update, context: CallbackContext[JSON, JSON, JSON]) -> int:
     """Asks the user to select a place."""
     assert update.message is not None
+    assert context.user_data is not None
 
     if not isinstance(update.message.text, str):
         update.message.reply_text('Input text')
@@ -35,5 +36,6 @@ def city_stats(update: Update, context: CallbackContext[JSON, JSON, JSON]) -> in
 
     place_name = [place.name for place in city_places]
     update.message.reply_text(', '.join(place_name))
+    context.user_data['city_id'] = city.uid
 
-    return states.PLACE_STATS
+    return states.PLACE_STATS_BY_CITY

@@ -37,3 +37,26 @@ def place_stats(update: Update, context: CallbackContext[JSON, JSON, JSON]) -> i
         update.message.reply_text(answer)
 
     return ConversationHandler.END
+
+
+def place_stats_by_city(update: Update, context: CallbackContext[JSON, JSON, JSON]) -> int:
+    """Asks the user to enter a place name."""
+    assert update.message is not None
+    assert context.user_data is not None
+
+    if not isinstance(update.message.text, str):
+        update.message.reply_text('Input text')
+        return states.PLACE_STATS_BY_CITY
+
+    target_places = update.message.text
+    places = api.places.get_place(target_places)
+    target_city_id = context.user_data.get('city_id', 'Not found')
+
+    for place in places:
+        city = api.cities.get_by_id(place.city_id)
+
+        if city.uid == target_city_id:
+            answer = f'{place.name} находится в городе {city.name}. \n {place.description}'
+            update.message.reply_text(answer)
+
+    return ConversationHandler.END
