@@ -32,7 +32,8 @@ def place_stats(update: Update, context: CallbackContext[JSON, JSON, JSON]) -> i
     places = api.places.get_place(target_places)
 
     for place in places:
-        answer = f'{place.name} находится в городе x. \n {place.description}'
+        city = api.cities.get_by_id(place.city_id)
+        answer = f'{place.name} находится в городе {city.name}. \n {place.description}'
         update.message.reply_text(answer)
 
     return ConversationHandler.END

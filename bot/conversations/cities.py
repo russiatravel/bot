@@ -25,17 +25,15 @@ def city_stats(update: Update, context: CallbackContext[JSON, JSON, JSON]) -> in
     """Asks the user to select a place."""
     assert update.message is not None
 
+    if not isinstance(update.message.text, str):
+        update.message.reply_text('Input text')
+        return states.CITY_STATS
+
     target_city = update.message.text
-    cities = api.cities.get_all()
-    for city in cities:
-        if city.name == target_city:
-            uid = city.uid
-        else:
-            uid = 1
+    city = api.cities.get_by_name(target_city)[0]
+    city_places = api.cities.get_for_city(city.uid)
 
-    city_places = api.cities.get_for_city(uid)
     place_name = [place.name for place in city_places]
-
     update.message.reply_text(', '.join(place_name))
 
     return states.PLACE_STATS

@@ -29,6 +29,20 @@ class CityClient:
 
         return [City(**city) for city in cities]
 
+    def get_by_id(self, uid: int) -> City:
+        response = httpx.get(url=f'{self.url}/{uid}')
+        response.raise_for_status()
+        city = response.json()
+
+        return City(**city)
+
+    def get_by_name(self, name: str) -> list[City]:
+        response = httpx.get(url=f'{self.url}/?name={name}')
+        response.raise_for_status()
+        cities = response.json()
+
+        return [City(**city) for city in cities]
+
     def get_for_city(self, uid: int) -> list[Place]:
         response = httpx.get(url=f'{self.url}/{uid}/places/')
         response.raise_for_status()
