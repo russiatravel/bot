@@ -14,7 +14,7 @@ def city_choice(update: Update, context: CallbackContext[JSON, JSON, JSON]) -> i
     cities = api.cities.get_all()
     city_name = [city.name for city in cities]
 
-    question = 'Which city from {cities}?'.format(cities=','.join(city_name))
+    question = 'Which city from {cities}?'.format(cities=', '.join(city_name))
     context.user_data['choice'] = 'city'
     update.message.reply_text(question, reply_markup=ReplyKeyboardRemove())
 
@@ -24,16 +24,18 @@ def city_choice(update: Update, context: CallbackContext[JSON, JSON, JSON]) -> i
 def city_stats(update: Update, context: CallbackContext[JSON, JSON, JSON]) -> int:
     """Asks the user to select a place."""
     assert update.message is not None
+    assert context.user_data is not None
+
+    if not isinstance(update.message.text, str):
+        update.message.reply_text('Input text')
+        return states.CITY_STATS
 
     target_city = update.message.text
-    cities = api.cities.get_all()
-    for city in cities:
-        if city.name == target_city:
-            uid = city.uid
+    city = api.cities.get_by_name(target_city)[0]
+    city_places = api.cities.get_for_city(city.uid)
 
-    city_places = api.cities.get_for_city(uid)
     place_name = [place.name for place in city_places]
+    update.message.reply_text(', '.join(place_name))
+    context.user_data['city_id'] = city.uid
 
-    update.message.reply_text(','.join(place_name))
-
-    return states.PLACE_STATS
+    return states.PLACE_STATS_BY_CITY

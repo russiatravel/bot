@@ -3,7 +3,7 @@ from telegram.ext import CommandHandler, ConversationHandler, Filters, MessageHa
 from bot.conversations import states
 from bot.conversations.cities import city_choice, city_stats
 from bot.conversations.core import cancel, start
-from bot.conversations.places import place_choice, place_stats
+from bot.conversations.places import place_choice, place_stats, place_stats_by_city
 
 conv_handler = ConversationHandler(
     entry_points=[CommandHandler('start', start)],
@@ -24,6 +24,11 @@ conv_handler = ConversationHandler(
         states.PLACE_STATS: [
             MessageHandler(
                 Filters.text, place_stats,
+            ),
+        ],
+        states.PLACE_STATS_BY_CITY: [
+            MessageHandler(
+                Filters.text, place_stats_by_city,
             ),
         ],
     },
