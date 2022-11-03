@@ -49,6 +49,7 @@ def place_stats(update: Update, context: CallbackContext[JSON, JSON, JSON]) -> i
             f'{output_description}'
             f'<a href="{place.preview_image_url}">&#8205;</a>'
         )
+
         update.message.reply_html(answer)
 
     return ConversationHandler.END
@@ -67,13 +68,21 @@ def place_stats_by_city(update: Update, context: CallbackContext[JSON, JSON, JSO
     places = api.places.get_place(target_places)
     target_city_id = context.user_data.get('city_id', 'Not found')
 
+    max_lenght = int(os.environ['DESCRIPTION_LENGHT'])
+
     for place in places:
         city = api.cities.get_by_id(place.city_id)
 
         if city.uid == target_city_id:
+            if len(place.description) > max_lenght:
+                output_description = place.description[:max_lenght]
+                output_description = f'{output_description}...'
+            else:
+                output_description = place.description
+
             answer = (
                 f'<b>{place.name}</b> находится в городе <b>{city.name}</b>. \n \n'
-                f'{place.description}'
+                f'{output_description}'
                 f'<a href="{place.preview_image_url}">&#8205;</a>'
             )
             update.message.reply_html(answer)
