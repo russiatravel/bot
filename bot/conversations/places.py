@@ -1,3 +1,5 @@
+import os
+
 from telegram import ReplyKeyboardRemove, Update
 from telegram.ext import CallbackContext, ConversationHandler
 
@@ -33,9 +35,18 @@ def place_stats(update: Update, context: CallbackContext[JSON, JSON, JSON]) -> i
 
     for place in places:
         city = api.cities.get_by_id(place.city_id)
+
+        max_lenght = int(os.environ['DESCRIPTION_LENGHT'])
+
+        if len(place.description) > max_lenght:
+            output_description = place.description[:max_lenght]
+            output_description = f'{output_description}...'
+        else:
+            output_description = place.description
+
         answer = (
             f'<b>{place.name}</b> находится в городе <b>{city.name}</b>. \n \n'
-            f'{place.description}'
+            f'{output_description}'
             f'<a href="{place.preview_image_url}">&#8205;</a>'
         )
         update.message.reply_html(answer)
