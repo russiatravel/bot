@@ -11,10 +11,7 @@ def city_choice(update: Update, context: CallbackContext[JSON, JSON, JSON]) -> i
     assert update.message is not None
     assert context.user_data is not None
 
-    cities = api.cities.get_all()
-    city_name = [city.name for city in cities]
-
-    question = 'Which city from {cities}?'.format(cities=', '.join(city_name))
+    question = 'В каком городе будем искать достопримечательности?'
     context.user_data['choice'] = 'city'
     update.message.reply_text(question, reply_markup=ReplyKeyboardRemove())
 
