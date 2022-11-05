@@ -33,6 +33,10 @@ def place_stats(update: Update, context: CallbackContext[JSON, JSON, JSON]) -> i
 
     places = api.places.get_place(target_places)
 
+    if not places:
+        update.message.reply_text('Таких достопримечательностей у нас нет')
+        return states.PLACE_STATS
+
     for place in places:
         city = api.cities.get_by_id(place.city_id)
 
@@ -45,7 +49,7 @@ def place_stats(update: Update, context: CallbackContext[JSON, JSON, JSON]) -> i
             output_description = place.description
 
         answer = (
-            f'<b>{place.name}</b> находится в городе <b>{city.name}</b>. \n \n'
+            f'<b>{place.name}</b> находится в <b>{city.name}</b>. \n \n'
             f'{output_description}'
             f'<a href="{place.preview_image_url}">&#8205;</a>'
         )
@@ -68,6 +72,10 @@ def place_stats_by_city(update: Update, context: CallbackContext[JSON, JSON, JSO
     places = api.places.get_place(target_places)
     target_city_id = context.user_data.get('city_id', 'Not found')
 
+    if not places:
+        update.message.reply_text('Таких достопримечательностей у нас нет')
+        return states.PLACE_STATS_BY_CITY
+
     max_lenght = int(os.environ['DESCRIPTION_LENGHT'])
 
     for place in places:
@@ -81,7 +89,7 @@ def place_stats_by_city(update: Update, context: CallbackContext[JSON, JSON, JSO
                 output_description = place.description
 
             answer = (
-                f'<b>{place.name}</b> находится в городе <b>{city.name}</b>. \n \n'
+                f'<b>{place.name}</b> находится в <b>{city.name}</b>. \n \n'
                 f'{output_description}'
                 f'<a href="{place.preview_image_url}">&#8205;</a>'
             )

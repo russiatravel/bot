@@ -1,7 +1,7 @@
 from telegram.ext import CommandHandler, ConversationHandler, Filters, MessageHandler
 
 from bot.conversations import states
-from bot.conversations.cities import city_choice, city_stats
+from bot.conversations.cities import city_choice, city_list, city_stats
 from bot.conversations.core import cancel, start
 from bot.conversations.places import place_choice, place_stats, place_stats_by_city
 
@@ -19,6 +19,11 @@ conv_handler = ConversationHandler(
         states.CITY_STATS: [
             MessageHandler(
                 Filters.text, city_stats,
+            ),
+        ],
+        states.CITY_LIST: [
+            MessageHandler(
+                Filters.text, city_list,
             ),
         ],
         states.PLACE_STATS: [
