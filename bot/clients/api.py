@@ -22,8 +22,8 @@ class CityClient:
     def __init__(self, url: str) -> None:
         self.url = f'{url}/cities'
 
-    def get_all(self) -> list[City]:
-        response = httpx.get(url=f'{self.url}/')
+    def get_list_by_name(self, name: str) -> list[City]:
+        response = httpx.get(url=f'{self.url}/?name={name}')
         response.raise_for_status()
         cities = response.json()
 

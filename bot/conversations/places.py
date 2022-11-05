@@ -74,7 +74,7 @@ def place_stats_by_city(update: Update, context: CallbackContext[JSON, JSON, JSO
 
     if not places:
         update.message.reply_text('Таких достопримечательностей у нас нет')
-        return states.PLACE_STATS
+        return states.PLACE_STATS_BY_CITY
 
     max_lenght = int(os.environ['DESCRIPTION_LENGHT'])
 
